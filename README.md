@@ -4,5 +4,8 @@
 ```shell
 nc -lk 9999
 ```
-
+如果要命令后模拟接收
+```shell
+nc localhost 9999
+```
 
