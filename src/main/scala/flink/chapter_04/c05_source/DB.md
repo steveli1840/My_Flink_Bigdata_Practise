@@ -1,4 +1,4 @@
-# MyQql operation
+# MySql operation
 
 1. connect to mysql
 
