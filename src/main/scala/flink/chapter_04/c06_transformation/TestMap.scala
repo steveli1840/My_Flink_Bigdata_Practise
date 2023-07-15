@@ -1,4 +1,4 @@
-package flink.chapter_04.c05_transformation
+package flink.chapter_04.c06_transformation
 
 import org.apache.flink.streaming.api.scala._
 
