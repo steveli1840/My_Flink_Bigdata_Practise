@@ -28,12 +28,12 @@ object TestProcessWindowReduce {
     })
       .keyBy(_._1)
       .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
-      .reduce(new MyReducefunction2, new MyProcessWindowsFunction2)
+      .reduce(new MyReduceFunction2, new MyProcessWindowsFunction2)
       .print()
     env.execute("TestProcessWindowReduce")
   }
 
-  class MyReducefunction2 extends ReduceFunction[(String, Int)] {
+  class MyReduceFunction2 extends ReduceFunction[(String, Int)] {
     override def reduce(value1: (String, Int), value2: (String, Int)): (String, Int) = {
       if (value1._2 > value2._2) {
         (value1._1, value2._2)
