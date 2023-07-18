@@ -19,7 +19,15 @@ object ProcessWindowFunctionExample {
     stream.map(line => {
       val arr = line.split(",")
       (arr(0), arr(1))
-    }).keyBy(_._1).window(TumblingProcessingTimeWindows.of(Time.minutes(2))).process(new MyProcessWindowFunc).print()
+    })
+      .keyBy(_._1)
+      .window(TumblingProcessingTimeWindows.of(Time.minutes(2)))
+      //      .process(new MyProcessWindowFunc)
+      .process(new ProcessWindowFunction[(String, String), (String, Int), String, TimeWindow] {
+        override def process(key: String, context: Context, elements: Iterable[(String, String)], out: Collector[(String, Int)]): Unit = out.collect(key, elements.size)
+      })
+      .print()
+
     env.execute("ProcessWindowFunctionExample")
   }
 }
@@ -27,3 +35,16 @@ object ProcessWindowFunctionExample {
 class MyProcessWindowFunc extends ProcessWindowFunction[(String, String), (String, Int), String, TimeWindow] {
   override def process(key: String, context: Context, elements: Iterable[(String, String)], out: Collector[(String, Int)]): Unit = out.collect(key, elements.size)
 }
+
+/*
+测试数据：
+
+1001,login
+1002,add
+1001,update
+1001,delete
+1001,buy
+1001,checkout
+1002,buy
+
+ */
